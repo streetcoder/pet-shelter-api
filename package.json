@@ -1,0 +1,16 @@
+{
+  "name": "pet-shelter-api",
+  "version": "1.0.0",
+  "description": "Pet Shelter API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "streetcoder",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "sqlite3": "^4.0.0"
+  }
+}
