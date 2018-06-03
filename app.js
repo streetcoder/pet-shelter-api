@@ -22,7 +22,7 @@ app.use(bodyparser.urlencoded({extended: false}));
 //  database
 // -----------------------------------------------------------------------------
 
-var db = new sqlite3.Database('./petShelterApi.db')
+var db = new sqlite3.Database('./pet_shelter_api.db')
 var db_ready = false;
 
 var sql_create_table =
@@ -31,7 +31,6 @@ var sql_create_table =
     '  name VARCHAR(255), ' +
     '  type VARCHAR(255), ' +
     '  breed VARCHAR(255), ' +
-    '  location VARCHAR(255), ' +
     '  latitude VARCHAR(255), ' +
     '  longitude VARCHAR(255), ' +
     '  created INTEGER, ' +
@@ -80,14 +79,14 @@ app.post('/api/pets', function (req, res) {
         }
         else{
             var now = new Date().getTime() / 1000 >> 0;
-            var params = [ req.body.name, req.body.type, req.body.breed, req.body.location, req.body.latitude,req.body.longitude, now, now ];
 
-            db.run('INSERT INTO pets (name,type,breed,location, latitude, longitude, created, updated) VALUES(?,?,?,?,?,?,?,?)', params, function (err) {
-
+            var params = [ req.body.name, req.body.type, req.body.breed, req.body.latitude,req.body.longitude, now, now ];
+            db.run('INSERT INTO pets (name,type,breed, latitude, longitude, created, updated) VALUES(?,?,?,?,?,?,?)', params, function (err) {
+                var id = parseInt(this.lastID);
                 if (err)
                     res.json({ status: 'error', message:err });
 
-                res.json({status: 'success', message: 'pet created successfully!' });
+                res.json({status: 'success', message: 'pet created successfully!', pet_id: id });
 
             });
         }
