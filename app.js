@@ -93,10 +93,18 @@ app.post('/api/pets', function (req, res) {
         }
     });
 
-
-
-
 });
 
+// return individual pet information
+app.get('/api/pet/:petId', function(req, res) {
+
+    db.all("SELECT * FROM pets where id='" + req.params.petId + "'", function(err, rows){
+        if(rows.length < 1){
+            res.json({ status: 'error', message:'pet is not exist' });
+        }else{
+            res.json(rows);
+        }
+    });
+});
 
 app.listen(port, () => console.log('Example app listening on port 8080!'))
