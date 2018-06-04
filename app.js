@@ -65,6 +65,7 @@ app.get('/api/pets', function(req, res){
     db.all("SELECT * FROM pets", function(err, rows){
         if (err)
             res.json({ status: 'error', message:err });
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.json(rows);
     });
 });
