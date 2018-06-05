@@ -36,7 +36,7 @@ This application is a behind the scenes service that manages a datastore of Pets
 
 #### Testing Instruction
 - Make the database empty
-- run `sqlite3 pet_shelter_api_test.db`
+- run `sqlite3 /test/pet_shelter_api_test.db`
 - run `delete from pets;`
 - closing sqlite3 console: run `.quit`
 - npm test
