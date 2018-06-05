@@ -9,11 +9,13 @@
  *
  */
 
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 var port = process.env.PORT || 8080;
 var bodyparser = require('body-parser');
-var sqlite3 = require('sqlite3').verbose()
+var sqlite3 = require('sqlite3').verbose();
+var env = require('dotenv').config();
+
 
 
 app.use(bodyparser.urlencoded({extended: false}));
@@ -21,8 +23,12 @@ app.use(bodyparser.urlencoded({extended: false}));
 
 //  database
 // -----------------------------------------------------------------------------
+if (process.env.NODE_ENV === 'test') {
+    var db = new sqlite3.Database('./test/pet_shelter_api_test.db');
+}else{
+    var db = new sqlite3.Database('./pet_shelter_api.db');
+}
 
-var db = new sqlite3.Database('./pet_shelter_api.db')
 var db_ready = false;
 
 var sql_create_table =
@@ -82,7 +88,7 @@ app.post('/api/pets', function (req, res) {
             var now = new Date().getTime() / 1000 >> 0;
 
             var params = [ req.body.name, req.body.type, req.body.breed, req.body.latitude,req.body.longitude, now, now ];
-            db.run('INSERT INTO pets (name,type,breed, latitude, longitude, created, updated) VALUES(?,?,?,?,?,?,?)', params, function (err) {
+            db.run('INSERT INTO pets (name, type, breed, latitude, longitude, created, updated) VALUES(?,?,?,?,?,?,?)', params, function (err) {
                 var id = parseInt(this.lastID);
                 if (err)
                     res.json({ status: 'error', message:err });
@@ -107,4 +113,6 @@ app.get('/api/pet/:petId', function(req, res) {
     });
 });
 
-app.listen(port, () => console.log('Example app listening on port 8080!'))
+app.listen(port, console.log('Example app listening on port 8080!'));
+
+module.exports = app;
